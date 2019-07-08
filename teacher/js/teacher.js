@@ -212,7 +212,7 @@ var help_needed =  false; //Teacher has work to do
 
 //Websockets
 var server = window.location.hostname;
-var socket = io.connect(server);
+var socket = io.connect('http://localhost:3000');
 
 //Connect to the server
 socket.on('connect', function() {
