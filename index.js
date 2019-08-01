@@ -9,15 +9,15 @@ var port = process.env.PORT || 3000;
 
 var EventManager = require('./eventmanager').EventManager;
 var AssignmentManager = require('./assignmentmanager').AssignmentManager;
-
+ 
 //Express init
 var app = express.createServer();
 //Websockets init thorough express
 var io = require('socket.io').listen(app);
-io.set('log level', 1);
+//io.set('log level', 1); // reduce logging
 
 /*
-Needed for heroku hosting
+Needed for heroku hosting ( cambiando io.configure por io.use, funciona en versiones de socket.io superiores a 0.9)
 io.configure(function () {
   io.set("transports", ["xhr-polling"]);
   io.set("polling duration", 10);
@@ -450,12 +450,11 @@ io.sockets.on('connection', function (socket) {
 			console.log("queue after the event:");
 			console.log(my_queue);
 		}
-		socket.get("teacher_id", function(error, teacher_id){
-			event.teacher_id = teacher_id;
-			eventManager.save(event, function(error, events){
-				var event = events[0];
-				console.log('teacher event'+JSON.stringify(event));
-			});
+
+		event.teacher_id = socket.teacher_id;
+		eventManager.save(event, function(error, events){
+			var event = events[0];
+			console.log('teacher event'+JSON.stringify(event));
 		});
 
 	});
@@ -522,9 +521,9 @@ io.sockets.on('connection', function (socket) {
 						});
 					}
 					//Save session name to the socket
-					socket.set("sessionStudent", userInfoArray[0].group+users.session);
+					socket.sessionStudent = userInfoArray[0].group+users.session;
 					//fakeIP
-					socket.set("fakeIP", users.IP);
+					socket.fakeIP = users.IP;
 				//}
 			}
 		});
@@ -538,8 +537,9 @@ io.sockets.on('connection', function (socket) {
 		//console.log('new event(my_session):'+JSON.stringify(my_session));
 		//console.log('new event(my_queue):'+JSON.stringify(my_queue));
 		//Save session name to the socket
-		socket.set("sessionTeacher", info.session);
-		socket.set("teacher_id", info.teacher_id);
+		socket.sessionTeacher = info.session;
+		socket.teacher_id = info.teacher_id;
+
 		socket.emit('init', {session: my_session, queue: my_queue, questions: my_questions});
 		console.log('new teacher ('+info.teacher_id+') at session '+info.session);
 	});

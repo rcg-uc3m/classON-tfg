@@ -85,6 +85,8 @@ var helpNeeded = false;
 var user = window.localStorage.getItem("user");
 var position = window.localStorage.getItem("position");
 
+
+
 if(!user){
 	user = [];
 	requestUser();
@@ -336,8 +338,9 @@ function vote(qid){
 var socket;
 function checkUsers(callback, force){
 	if(!socket){
-		var server = window.location.hostname;
+		//var server = window.location.hostname;
 		//server = "127.0.0.1";
+		var server = 'http://localhost:3000'
 		socket = io.connect(server);
 		socket.on('connect', function() {
 			sendEventToServer('new student', {session: session, force: (force==true)});

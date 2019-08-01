@@ -211,7 +211,8 @@ var pcs_needHelp = []; //Queue of computers that need help
 var help_needed =  false; //Teacher has work to do
 
 //Websockets
-var server = window.location.hostname;
+//var server = window.location.hostname;
+var server = 'http://localhost:3000';
 var socket = io.connect(server);
 
 //Connect to the server

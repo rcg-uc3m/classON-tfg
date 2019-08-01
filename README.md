@@ -14,6 +14,67 @@
 3. Install project dependencies
 `npm install` (from the project folder)
 
+?. Launch mongodb as a service
+```bash
+sudo vim /etc/systemd/system/mongodb.service
+```
+
+Copy the following contents in the file.
+
+```
+#Unit contains the dependencies to be satisfied before the service is started.
+[Unit]
+Description=MongoDB Database
+After=network.target
+Documentation=https://docs.mongodb.org/manual
+# Service tells systemd, how the service should be started.
+# Key `User` specifies that the server will run under the mongodb user and
+# `ExecStart` defines the startup command for MongoDB server.
+[Service]
+User=mongodb
+Group=mongodb
+ExecStart=/usr/bin/mongod --quiet --config /etc/mongod.conf
+# Install tells systemd when the service should be automatically started.
+# `multi-user.target` means the server will be automatically started during boot.
+[Install]
+WantedBy=multi-user.target
+```
+
+Update the systemd service with the command stated below:
+```bash
+systemctl daemon-reload
+```
+
+Start the service with systemcl.
+```bash
+sudo systemctl start mongodb
+```
+
+Check if mongodb has been started on port 27017 with netstat command:
+```bash
+netstat -plntu
+```
+
+Check if the service has started properly.
+```bash
+sudo systemctl status mongodb
+```
+
+Enable auto start MongoDB when system starts.
+```bash
+sudo systemctl enable mongodb
+```
+
+Stop MongoDB
+```bash
+sudo systemctl stop mongodb
+```
+
+Restart MongoDB
+```bash
+sudo systemctl restart mongodb
+```
+
 4. Start the server with node.js v6.0
 `nvm run 6.0 index.js`
 

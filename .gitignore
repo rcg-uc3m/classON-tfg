@@ -2,7 +2,9 @@
 node_modules
 .project
 .settings
+.idea
 *~
+.swp
 
 classon-UAB.sublime-project
 
@@ -10,4 +12,4 @@ classon-UAB.sublime-workspace
 
 teacher/class_templates/
 
-users
+tmp/
