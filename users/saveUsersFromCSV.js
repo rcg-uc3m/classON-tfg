@@ -84,7 +84,7 @@ function csvToJson (csvText, group){
 
 if(process.argv.length>3){
 	var filePath = process.argv[2];
-	fs.exists(filePath, function(exists) {
+	path.exists(filePath, function(exists) {
     	if (exists) {
             fs.readFile(filePath, "UTF-8",function(error, content) {
                 if (error) {
